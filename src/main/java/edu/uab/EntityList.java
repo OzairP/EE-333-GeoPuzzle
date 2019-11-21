@@ -1,6 +1,6 @@
 package edu.uab;
 
-import edu.uab.simulation.components.intrinsic.Render;
+import edu.uab.simulation.components.intrinsic.Renderable;
 import edu.uab.simulation.entities.Entity;
 import javafx.scene.Node;
 
@@ -17,8 +17,8 @@ public class EntityList extends ArrayList<Entity> {
 
     @Override
     public boolean add(Entity entity) {
-        if (entity instanceof Render) {
-            this.sceneList.add(((Render) entity).render().getNode());
+        if (entity instanceof Renderable) {
+            this.sceneList.add(((Renderable) entity).render().getNode());
         }
 
         return super.add(entity);

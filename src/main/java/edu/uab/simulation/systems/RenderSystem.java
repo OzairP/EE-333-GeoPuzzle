@@ -1,13 +1,15 @@
 package edu.uab.simulation.systems;
 
-import edu.uab.simulation.components.intrinsic.Render;
+import edu.uab.EntityList;
+import edu.uab.simulation.components.intrinsic.Renderable;
+import javafx.application.Platform;
 import javafx.scene.Node;
 import javafx.scene.shape.Rectangle;
 
-public class RenderSystem extends System<Render> {
+public class RenderSystem extends System<Renderable> {
 
     @Override
-    public void update(Render entity, int tick) {
+    public void update(Renderable entity, int tick, EntityList entities) {
         if (!entity.position().isDirty()) {
             return;
         }
@@ -15,8 +17,10 @@ public class RenderSystem extends System<Render> {
         Node node = entity.render().getNode();
 
         if (node instanceof Rectangle) {
-            ((Rectangle) node).setX(entity.position().getX());
-            ((Rectangle) node).setY(entity.position().getY());
+            Platform.runLater(() -> {
+                ((Rectangle) node).setX(entity.position().getX());
+                ((Rectangle) node).setY(entity.position().getY());
+            });
         }
     }
 }

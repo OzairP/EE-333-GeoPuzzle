@@ -1,16 +1,16 @@
 package edu.uab.simulation.components.intrinsic;
 
+import edu.uab.simulation.math.IntrinsicForces;
+import edu.uab.simulation.math.TerminalVector;
 import edu.uab.simulation.math.Vector;
 
 public class PhysicsComponent {
 
+    public static final double TERMINAL_VELOCITY = 50;
+
     private double mass;
-
-    private double coefficientOfFriction = 0;
-
-    private Vector appliedForce = new Vector(0, 0);
-
-    private Vector velocity = new Vector(0, 0);
+    public IntrinsicForces intrinsicForces = new IntrinsicForces();
+    private Vector velocity = new TerminalVector(PhysicsComponent.TERMINAL_VELOCITY);
 
     public PhysicsComponent(double mass) {
         this.mass = mass;
@@ -18,18 +18,6 @@ public class PhysicsComponent {
 
     public double getMass() {
         return mass;
-    }
-
-    public void setMass(double mass) {
-        this.mass = mass;
-    }
-
-    public Vector getAppliedForce() {
-        return appliedForce;
-    }
-
-    public void setAppliedForce(Vector appliedForce) {
-        this.appliedForce = appliedForce;
     }
 
     public Vector getVelocity() {
@@ -40,15 +28,11 @@ public class PhysicsComponent {
         this.velocity = velocity;
     }
 
-    public double getCoefficientOfFriction() {
-        return coefficientOfFriction;
-    }
-
-    public void setCoefficientOfFriction(double coefficientOfFriction) {
-        this.coefficientOfFriction = coefficientOfFriction;
+    public void clearVelocity() {
+        this.velocity = new TerminalVector(PhysicsComponent.TERMINAL_VELOCITY);
     }
 
     public String toString() {
-        return "[PhysicsComponent]{mass=" + this.getMass() + ";coeffOfFric= " + this.coefficientOfFriction + ";appliedForce=" + this.getAppliedForce() + ";velocity=" + this.getVelocity() + ";}";
+        return "[PhysicsComponent]{mass=" + this.getMass() + ";intrinsicForces=" + this.intrinsicForces + ";velocity=" + this.getVelocity() + ";}";
     }
 }

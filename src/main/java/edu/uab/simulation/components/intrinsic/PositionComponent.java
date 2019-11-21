@@ -6,25 +6,43 @@ public class PositionComponent {
 
     private boolean dirty = false;
 
-    private int x = 0;
+    private double x = 0;
 
-    private int y = 0;
+    private double y = 0;
 
-    public int getX() {
+    public PositionComponent() {
+    }
+
+    public PositionComponent(double x, double y) {
+        this.x = x;
+        this.y = y;
+    }
+
+    public double getX() {
         return x;
     }
 
-    public void setX(int x) {
+    public void setX(double x) {
         this.x = x;
         this.setDirty();
     }
 
-    public int getY() {
+    public void addX(double dx) {
+        this.x += dx;
+        this.setDirty();
+    }
+
+    public double getY() {
         return y;
     }
 
-    public void setY(int y) {
+    public void setY(double y) {
         this.y = y;
+        this.setDirty();
+    }
+
+    public void addY(double dy) {
+        this.y += dy;
         this.setDirty();
     }
 
@@ -33,8 +51,8 @@ public class PositionComponent {
     }
 
     public void setFromVector(Vector v) {
-        this.setX((int) v.getX());
-        this.setY((int) v.getY());
+        this.setX(v.getX());
+        this.setY(v.getY());
         this.setDirty();
     }
 

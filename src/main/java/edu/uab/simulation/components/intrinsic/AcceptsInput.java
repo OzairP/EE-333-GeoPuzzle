@@ -1,6 +1,6 @@
 package edu.uab.simulation.components.intrinsic;
 
-public interface Input extends Physics {
+public interface AcceptsInput extends HasPhysics {
 
     InputComponent input();
 

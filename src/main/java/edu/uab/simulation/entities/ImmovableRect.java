@@ -3,24 +3,23 @@ package edu.uab.simulation.entities;
 import edu.uab.simulation.components.PlayerRenderComponent;
 import edu.uab.simulation.components.intrinsic.*;
 
-public class Player implements Collidable, Renderable, AcceptsInput, Entity, Debuggable {
+public class ImmovableRect implements ImmovableCollision, Entity, Renderable {
 
-    public final int height = 50;
-    public final int width = 50;
     private int id;
-    private InputComponent input = new InputComponent();
-    private PositionComponent position = new PositionComponent(5, 5);
-    private CollisionComponent collision = new CollisionComponent(this.position, this.width, this.height);
+    private int width;
+    private int height;
+    private PositionComponent position;
+    private CollisionComponent collision;
     private PhysicsComponent physics = new PhysicsComponent(10);
-    private RenderComponent render = new PlayerRenderComponent(this.height, this.width);
+    private RenderComponent render;
 
-    public Player(int id) {
+    public ImmovableRect(int id, int x, int y, int height, int width) {
         this.id = id;
-    }
-
-    @Override
-    public InputComponent input() {
-        return this.input;
+        this.height = height;
+        this.width = width;
+        this.position = new PositionComponent(x, y);
+        this.collision = new CollisionComponent(this.position, this.width, this.height);
+        this.render = new PlayerRenderComponent(height, width);
     }
 
     @Override
@@ -39,19 +38,19 @@ public class Player implements Collidable, Renderable, AcceptsInput, Entity, Deb
     }
 
     @Override
-    public RenderComponent render() {
-        return this.render;
-    }
-
-    @Override
     public int getId() {
         return this.id;
     }
 
     @Override
     public String toString() {
-        return "[Entity (Player)]\n" +
+        return "[Entity (ImmovableRect)]\n" +
                 this.position().toString() + "\n" +
                 this.physics().toString() + "\n";
+    }
+
+    @Override
+    public RenderComponent render() {
+        return this.render;
     }
 }

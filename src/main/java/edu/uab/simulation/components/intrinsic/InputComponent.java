@@ -5,11 +5,11 @@ import edu.uab.simulation.systems.Direction;
 
 public class InputComponent {
 
-    public static final Vector UP_FORCE = new Vector(0, -1);
-    public static final Vector DOWN_FORCE = new Vector(0, 1);
-    public static final Vector LEFT_FORCE = new Vector(-1, 0);
-    public static final Vector RIGHT_FORCE = new Vector(1, 0);
-    public static final Vector IDLE_FORCE = new Vector(0, 0);
+    public static final Vector UP_FORCE = new Vector(0, -150);
+    public static final Vector DOWN_FORCE = new Vector(0, 10);
+    public static final Vector LEFT_FORCE = new Vector(-10, 0);
+    public static final Vector RIGHT_FORCE = new Vector(10, 0);
+    public static final Vector IDLE_FORCE = new Vector();
 
     public Vector getDirectionAsVector(Direction direction) {
         switch (direction) {

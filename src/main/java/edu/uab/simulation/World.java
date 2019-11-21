@@ -1,10 +1,9 @@
 package edu.uab.simulation;
 
 import edu.uab.EntityList;
-import edu.uab.simulation.components.intrinsic.Input;
-import edu.uab.simulation.components.intrinsic.Physics;
-import edu.uab.simulation.components.intrinsic.Render;
+import edu.uab.simulation.components.intrinsic.*;
 import edu.uab.simulation.entities.Entity;
+import edu.uab.simulation.systems.CollisionSystem;
 import edu.uab.simulation.systems.InputSystem;
 import edu.uab.simulation.systems.PhysicsSystem;
 import edu.uab.simulation.systems.RenderSystem;
@@ -19,6 +18,8 @@ public class World {
     public final PhysicsSystem physics = new PhysicsSystem();
 
     public final RenderSystem render = new RenderSystem();
+
+    public final CollisionSystem collision = new CollisionSystem();
 
     public final EntityList entities;
 
@@ -38,22 +39,28 @@ public class World {
         int tick = this.getTick();
 
         for (Entity entity : this.entities) {
-            if (entity instanceof Input) {
-                this.input.update((Input) entity, tick);
+            if (entity instanceof AcceptsInput) {
+                this.input.update((AcceptsInput) entity, tick, this.entities);
             }
 
-            if (entity instanceof Physics) {
-                this.physics.update((Physics) entity, tick);
+            if (entity instanceof HasPhysics) {
+                this.physics.update((HasPhysics) entity, tick, this.entities);
             }
 
-            if (entity instanceof Render) {
-                this.render.update((Render) entity, tick);
+            if (entity instanceof Collidable) {
+                this.collision.update((Collidable) entity, tick, this.entities);
             }
+
+            if (entity instanceof Renderable) {
+                this.render.update((Renderable) entity, tick, this.entities);
+            }
+
         }
 
-        this.input.dispose(tick);
-        this.physics.dispose(tick);
-        this.render.dispose(tick);
+        this.input.dispose(this.entities, tick);
+        this.physics.dispose(this.entities, tick);
+        this.collision.dispose(this.entities, tick);
+        this.render.dispose(this.entities, tick);
 
         this.incrementTick();
     }
@@ -67,7 +74,7 @@ public class World {
                 this.input + "\n");
 
         for (Entity entity : this.entities) {
-            serial.append(entity);
+            if (entity instanceof Debuggable) serial.append(entity);
         }
 
         return serial.toString() + "\n";

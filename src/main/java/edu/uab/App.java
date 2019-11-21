@@ -1,6 +1,8 @@
 package edu.uab;
 
 import edu.uab.simulation.Simulation;
+import edu.uab.simulation.World;
+import edu.uab.simulation.entities.ImmovableRect;
 import edu.uab.simulation.entities.Player;
 import edu.uab.simulation.systems.Direction;
 import javafx.application.Application;
@@ -74,8 +76,18 @@ public class App extends Application {
             }
         });
 
-        this.simulation = new Simulation(root.getChildren());
-        this.simulation.world.entities.add(new Player());
+        this.simulation = new Simulation(
+                new World(root.getChildren(), 720, 1280)
+        );
+
+        this.simulation.world.entities.add(new Player(1));
+
+        this.simulation.world.entities.add(new ImmovableRect(3, 0, -100, 100, 1280));
+        this.simulation.world.entities.add(new ImmovableRect(4, 0, 700, 100, 1280));
+        this.simulation.world.entities.add(new ImmovableRect(5, -100, 0, 720, 100));
+        this.simulation.world.entities.add(new ImmovableRect(6, 1280, 0, 720, 100));
+        this.simulation.world.entities.add(new ImmovableRect(7, 100, 100, 200, 50));
+        this.simulation.world.entities.add(new ImmovableRect(8, 300, 150, 400, 50));
 
         timer.scheduleAtFixedRate(this.simulation, 0, 16);
 

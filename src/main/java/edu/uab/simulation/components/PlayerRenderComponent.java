@@ -7,7 +7,11 @@ import javafx.scene.shape.Rectangle;
 
 public class PlayerRenderComponent extends RenderComponent {
 
-    private Node node = new Rectangle(100, 100, Color.BLUEVIOLET);
+    private Node node;
+
+    public PlayerRenderComponent(int height, int width) {
+        this.node = new Rectangle(width, height, Color.BLUEVIOLET);
+    }
 
     @Override
     public Node getNode() {
