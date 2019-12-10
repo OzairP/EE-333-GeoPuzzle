@@ -1,9 +1,11 @@
 package edu.uab.simulation.systems;
 
 import edu.uab.EntityList;
+import edu.uab.simulation.World;
 import edu.uab.simulation.components.intrinsic.Collidable;
 import edu.uab.simulation.components.intrinsic.ImmovableCollision;
-import edu.uab.simulation.entities.Entity;
+import edu.uab.simulation.components.intrinsic.Interactable;
+import edu.uab.simulation.entities.EntityLike;
 import edu.uab.simulation.math.Vector;
 
 import java.util.ArrayList;
@@ -13,25 +15,38 @@ public class CollisionSystem extends System<Collidable> {
 
     public static final double COEFFICIENT_OF_RESTITUTION = 0.75;
 
+    public static final double COEFFICIENT_OF_FRICTION = 0.1;
+
     /**
      * A map of collisions already checked. The key is always less then the V
      */
     private HashMap<Integer, ArrayList<Integer>> cache = new HashMap<>();
 
+    public CollisionSystem(World world) {
+        super(world);
+    }
+
     @Override
     public void update(Collidable entity, int tick, EntityList entities) {
-        // This entity is immovable, so we won't collision check it
+        // This entity is immovable or interactable, so we won't collision check it
         // Only movable entities are collision checked against other collidable entities
-        if (entity instanceof ImmovableCollision) {
+        if (entity instanceof ImmovableCollision || entity instanceof Interactable) {
             return;
         }
 
         entity.collision().setTouchingGround(false);
 
         entity.physics().intrinsicForces.clearImpulse();
+        entity.physics().intrinsicForces.clearFriction();
 
-        for (Entity targetEntity : entities) {
+        for (EntityLike targetEntity : entities) {
             if (targetEntity == entity) {
+                continue;
+            }
+
+            Collidable target = (Collidable) targetEntity;
+
+            if (target.collision().ignoringCollisions()) {
                 continue;
             }
 
@@ -46,11 +61,14 @@ public class CollisionSystem extends System<Collidable> {
                 continue;
             }
 
-            Collidable target = (Collidable) targetEntity;
-
             if (!entity.collision().getBoundingBox().collidesWith(target.collision().getBoundingBox())) {
                 this.cache.get(key).add(value);
                 continue;
+            }
+
+            if (target instanceof Interactable) {
+                ((Interactable) target).onCollision(targetEntity, this.getWorld());
+                return;
             }
 
             entity.collision().setTouchingGround(entity.collision().isTouchingGround() || entity.position().getY() + entity.collision().getHeight() == target.position().getY());
@@ -77,13 +95,16 @@ public class CollisionSystem extends System<Collidable> {
                 }
             }
 
-
-            if (delX == null && delY == null) {
-                // set coeff of friction
+            // Touching ground, no need for collision resolution, just apply friction
+            if (delX == null && delY == null || entity.collision().isTouchingGround()) {
+                // F_f = F_n * mu
+                double normalForce = entity.physics().getMass() * PhysicsSystem.GRAVITY;
+                // Frictional force needs to be applied in the opposite direction of motion
+                double directionalCoefficient = entity.physics().getVelocity().getX() > 1 ? 1 : -1;
+                double frictionalForce = directionalCoefficient * normalForce * CollisionSystem.COEFFICIENT_OF_FRICTION;
+                entity.physics().intrinsicForces.setFriction(new Vector(frictionalForce, 0));
                 continue;
             }
-
-            java.lang.System.out.println("----- Collision Resolution \nCollision resolution delta's: <" + delX + ", " + delY + "> for entity " + entity + "\n--who collided with " + target + "---");
 
             if (delX != null && delY == null) {
                 if (entity.position().getY() + entity.collision().getHeight() == target.position().getY() || target.position().getY() + target.collision().getHeight() == entity.position().getY()) {

@@ -3,19 +3,19 @@ package edu.uab.simulation.entities;
 import edu.uab.simulation.components.PlayerRenderComponent;
 import edu.uab.simulation.components.intrinsic.*;
 
-public class Player implements Collidable, Renderable, AcceptsInput, Entity, Debuggable {
+public class Player extends Entity implements Collidable, Renderable, AcceptsInput, Debuggable {
 
-    public final int height = 50;
-    public final int width = 50;
-    private int id;
     private InputComponent input = new InputComponent();
-    private PositionComponent position = new PositionComponent(5, 5);
-    private CollisionComponent collision = new CollisionComponent(this.position, this.width, this.height);
     private PhysicsComponent physics = new PhysicsComponent(10);
-    private RenderComponent render = new PlayerRenderComponent(this.height, this.width);
+    private RenderComponent render;
+    private PositionComponent position;
+    private CollisionComponent collision;
 
-    public Player(int id) {
-        this.id = id;
+    public Player(int id, double startX, double startY, int size) {
+        super(id);
+        this.position = new PositionComponent(startX, startY);
+        this.collision = new CollisionComponent(this.position, size, size);
+        this.render = new PlayerRenderComponent(size, size);
     }
 
     @Override
@@ -41,11 +41,6 @@ public class Player implements Collidable, Renderable, AcceptsInput, Entity, Deb
     @Override
     public RenderComponent render() {
         return this.render;
-    }
-
-    @Override
-    public int getId() {
-        return this.id;
     }
 
     @Override

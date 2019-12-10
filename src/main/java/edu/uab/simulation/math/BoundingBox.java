@@ -48,4 +48,8 @@ public class BoundingBox {
         this.x = x;
         this.y = y;
     }
+
+    public String toString() {
+        return "[BoundingBox]{x=" + this.x + ";y=" + this.y + ";width=" + this.width + ";height=" + this.height + ";}";
+    }
 }

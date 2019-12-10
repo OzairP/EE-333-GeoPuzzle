@@ -1,6 +1,7 @@
 package edu.uab.simulation.systems;
 
 import edu.uab.EntityList;
+import edu.uab.simulation.World;
 import edu.uab.simulation.components.intrinsic.HasPhysics;
 import edu.uab.simulation.components.intrinsic.HasPosition;
 import edu.uab.simulation.components.intrinsic.ZeroGravity;
@@ -10,6 +11,10 @@ import edu.uab.simulation.math.Vector;
 public class PhysicsSystem extends System<HasPhysics> {
 
     public static final double GRAVITY = 1;
+
+    public PhysicsSystem(World world) {
+        super(world);
+    }
 
     @Override
     public void update(HasPhysics entity, int tick, EntityList entities) {

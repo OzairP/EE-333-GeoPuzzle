@@ -13,13 +13,34 @@ public class TerminalVector extends Vector {
         this.terminal = terminal;
     }
 
+    public TerminalVector(double terminal, Vector u) {
+        super(u.getX(), u.getY());
+        this.terminal = terminal;
+    }
+
     @Override
     public double getX() {
+        if (super.getX() == 0) {
+            return 0;
+        }
+
+        if (super.getX() < 0) {
+            return Math.max(super.getX(), -1 * this.terminal);
+        }
+
         return Math.min(super.getX(), this.terminal);
     }
 
     @Override
     public double getY() {
+        if (super.getY() == 0) {
+            return 0;
+        }
+
+        if (super.getY() < 0) {
+            return Math.max(super.getY(), -1 * this.terminal);
+        }
+
         return Math.min(super.getY(), this.terminal);
     }
 
@@ -41,5 +62,10 @@ public class TerminalVector extends Vector {
     @Override
     public TerminalVector divide(double n) {
         return new TerminalVector(this.terminal, this.getX() / n, this.getY() / n);
+    }
+
+    @Override
+    public Vector subtract(Vector n) {
+        return new TerminalVector(this.terminal, this.getX() - n.getX(), this.getY() - n.getY());
     }
 }

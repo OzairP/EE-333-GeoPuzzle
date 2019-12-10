@@ -34,6 +34,10 @@ public class Vector {
         return new Vector(this.getX() + n.getX(), this.getY() + n.getY());
     }
 
+    public Vector subtract(Vector n) {
+        return new Vector(this.getX() - n.getX(), this.getY() - n.getY());
+    }
+
     public Vector multiply(double n) {
         return new Vector(this.getX() * n, this.getY() * n);
     }

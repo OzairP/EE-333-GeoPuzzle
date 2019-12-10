@@ -9,6 +9,7 @@ public class CollisionComponent {
     private int width;
     private int height;
     private boolean isTouchingGround = false;
+    private boolean ignoreCollisions = false;
 
     public CollisionComponent(PositionComponent position, int width, int height) {
         this.position = position;
@@ -51,5 +52,17 @@ public class CollisionComponent {
 
     public void setTouchingGround() {
         isTouchingGround = true;
+    }
+
+    public boolean ignoringCollisions() {
+        return ignoreCollisions;
+    }
+
+    public void ignoreCollisions(boolean ignoreCollisions) {
+        this.ignoreCollisions = ignoreCollisions;
+    }
+
+    public String toString() {
+        return "[CollisionComponent]{boundingBox=" + this.getBoundingBox() + ";isTouchingGround=" + this.isTouchingGround() + ";isIgnoringCollisions=" + this.ignoringCollisions() + ";}";
     }
 }

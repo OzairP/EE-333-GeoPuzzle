@@ -3,22 +3,17 @@ package edu.uab.simulation.entities;
 import edu.uab.simulation.components.PlayerRenderComponent;
 import edu.uab.simulation.components.intrinsic.*;
 
-public class ImmovableRect implements ImmovableCollision, Entity, Renderable {
+public class ImmovableRect extends Entity implements ImmovableCollision, Renderable {
 
-    private int id;
-    private int width;
-    private int height;
     private PositionComponent position;
     private CollisionComponent collision;
     private PhysicsComponent physics = new PhysicsComponent(10);
     private RenderComponent render;
 
     public ImmovableRect(int id, int x, int y, int height, int width) {
-        this.id = id;
-        this.height = height;
-        this.width = width;
+        super(id);
         this.position = new PositionComponent(x, y);
-        this.collision = new CollisionComponent(this.position, this.width, this.height);
+        this.collision = new CollisionComponent(this.position, width, height);
         this.render = new PlayerRenderComponent(height, width);
     }
 
@@ -35,11 +30,6 @@ public class ImmovableRect implements ImmovableCollision, Entity, Renderable {
     @Override
     public CollisionComponent collision() {
         return this.collision;
-    }
-
-    @Override
-    public int getId() {
-        return this.id;
     }
 
     @Override

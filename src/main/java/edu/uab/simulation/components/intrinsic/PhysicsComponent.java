@@ -6,11 +6,11 @@ import edu.uab.simulation.math.Vector;
 
 public class PhysicsComponent {
 
-    public static final double TERMINAL_VELOCITY = 50;
+    public static final double TERMINAL_VELOCITY = 10;
 
     private double mass;
     public IntrinsicForces intrinsicForces = new IntrinsicForces();
-    private Vector velocity = new TerminalVector(PhysicsComponent.TERMINAL_VELOCITY);
+    private TerminalVector velocity = new TerminalVector(PhysicsComponent.TERMINAL_VELOCITY);
 
     public PhysicsComponent(double mass) {
         this.mass = mass;
@@ -20,12 +20,12 @@ public class PhysicsComponent {
         return mass;
     }
 
-    public Vector getVelocity() {
+    public TerminalVector getVelocity() {
         return velocity;
     }
 
     public void setVelocity(Vector velocity) {
-        this.velocity = velocity;
+        this.velocity = new TerminalVector(PhysicsComponent.TERMINAL_VELOCITY, velocity);
     }
 
     public void clearVelocity() {

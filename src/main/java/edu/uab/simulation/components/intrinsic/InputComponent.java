@@ -5,7 +5,7 @@ import edu.uab.simulation.systems.Direction;
 
 public class InputComponent {
 
-    public static final Vector UP_FORCE = new Vector(0, -150);
+    public static final Vector UP_FORCE = new Vector(0, -200);
     public static final Vector DOWN_FORCE = new Vector(0, 10);
     public static final Vector LEFT_FORCE = new Vector(-10, 0);
     public static final Vector RIGHT_FORCE = new Vector(10, 0);

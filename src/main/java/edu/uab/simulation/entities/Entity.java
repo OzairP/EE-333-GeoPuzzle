@@ -1,7 +1,14 @@
 package edu.uab.simulation.entities;
 
-public interface Entity {
+public abstract class Entity implements EntityLike {
 
-    int getId();
+    private final int id;
 
+    public Entity(int id) {
+        this.id = id;
+    }
+
+    public int getId() {
+        return id;
+    }
 }
